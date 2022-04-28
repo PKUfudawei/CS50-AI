@@ -231,7 +231,7 @@ def model_check(knowledge, query):
     def check_all(knowledge, query, symbols, model):
         """Checks if knowledge base entails query, given a particular model."""
 
-        # If model has an assignment for each symbol
+        # If model has an assignment for each symbol 
         if not symbols:
 
             # If knowledge base is true in model, then query must also be true

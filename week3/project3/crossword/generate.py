@@ -140,15 +140,14 @@ class CrosswordCreator():
         return False if one or more domains end up empty.
         """
         queue=arcs if arcs else list(self.crossword.overlaps.keys())
-        if queue:
+        while queue:
             x, y = queue.pop(0)
             if self.revise(x, y):
                 if not self.domains[x]:
                     return False
                 queue.extend([(x, z) for z in self.crossword.neighbors(x) if z!=y])
-                return self.ac3(queue)
-        else:
-            return True
+        
+        return True
 
     def assignment_complete(self, assignment):
         """

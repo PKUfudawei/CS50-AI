@@ -4,6 +4,7 @@
 .LSOverride
 Desktop.ini
 .ipynb_checkpoints/
+*.png
 
 # Icon must end with two \r
 Icon

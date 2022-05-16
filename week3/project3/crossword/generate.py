@@ -219,14 +219,21 @@ class CrosswordCreator():
         """
         if self.assignment_complete(assignment):
             return assignment
+        
         var = self.select_unassigned_variable(assignment)
         for val in self.order_domain_values(var, assignment):
+            ## new assignment
             assignment[var] = val 
-            ## no implement inference yet
             if self.consistent(assignment):
-                result = self.backtrack(assignment)
-                if result:
-                    return result
+                ## make inferences
+                pre_domains = self.domains.copy()
+                if self.ac3(arcs=[(var, z) for z in self.crossword.neighbors(var)]):
+                    result = self.backtrack(assignment)
+                    if result:
+                        return result
+                ## remove inferences (domains back to previous state)
+                self.domains = pre_domains
+            ## remove new assignment
             assignment.pop(var)
         
         return False

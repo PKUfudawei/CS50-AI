@@ -70,9 +70,10 @@ def tokenize(document):
     Process document by coverting all words to lowercase, and removing any
     punctuation or English stopwords.
     """
-    words=[w for w in nltk.word_tokenize(document.lower())
-           if (w not in string.punctuation) and 
-           (w not in nltk.corpus.stopwords.words("english"))]
+    words=[
+        w for w in nltk.word_tokenize(document.lower())
+        if (w not in string.punctuation) and (w not in nltk.corpus.stopwords.words("english"))
+    ]
     return words
 
 
@@ -103,7 +104,7 @@ def top_files(query, files, idfs, n):
     """
     tf_idf_sum={
         f: sum(
-            (idfs[w]*files[f].count(w) if w in files[f] else 0) for w in query 
+            idfs[w]*files[f].count(w) for w in query if w in files[f]
         ) for f in files
     }
     most_match=sorted(tf_idf_sum, key=tf_idf_sum.get, reverse=True)
@@ -120,8 +121,8 @@ def top_sentences(query, sentences, idfs, n):
     """
     idf_sum_qtd={
         s: (
-            sum((idfs[w] if w in sentences[s] else 0) for w in query), 
-            len(set(sentences[s]).intersection(query))/len(sentences[s])
+            sum(idfs[w] for w in query if w in sentences[s]), 
+            len(set(sentences[s]).intersection(query)) / len(sentences[s])
         ) for s in sentences
     }
     most_match=sorted(idf_sum_qtd, key=idf_sum_qtd.get, reverse=True)
